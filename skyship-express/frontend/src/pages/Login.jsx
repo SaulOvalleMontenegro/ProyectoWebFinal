@@ -90,19 +90,6 @@ const Login = () => {
           ¿No tienes cuenta?{' '}
           <Link to="/register" className="auth-card__link">Regístrate aquí</Link>
         </div>
-
-        {/* Credenciales de prueba */}
-        <div className="auth-card__demo">
-          <p className="auth-card__demo-title">Credenciales de prueba:</p>
-          <div className="auth-card__demo-item">
-            <span className="auth-card__demo-role">👤 Admin</span>
-            <code>admin@skyship.com / Admin1234!</code>
-          </div>
-          <div className="auth-card__demo-item">
-            <span className="auth-card__demo-role">📦 Usuario</span>
-            <code>maria@correo.com / User1234!</code>
-          </div>
-        </div>
       </div>
     </div>
   )
