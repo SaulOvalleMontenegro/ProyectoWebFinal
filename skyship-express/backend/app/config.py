@@ -15,13 +15,13 @@ class Config:
     # ── Base de datos (SQLAlchemy ORM + PyMySQL) ─────────────
     # Usamos valores por defecto seguros para desarrollo local, 
     # pero en AWS tomará los valores que configuraste con 'eb setenv'
-    _DB_USER = os.getenv("DB_USER", "root")
-    _DB_PASSWORD = os.getenv("DB_PASSWORD", "")
-    _DB_HOST = os.getenv("DB_HOST", "localhost")
-    _DB_PORT = os.getenv("DB_PORT", "3306")
-    _DB_NAME = os.getenv("DB_NAME", "skyship_db")
+    _DB_USER = os.environ.get("DB_USER")
+    _DB_PASSWORD = os.environ.get("DB_PASSWORD")
+    _DB_HOST = os.environ.get("DB_HOST")
+    _DB_PORT = os.environ.get("DB_PORT", "3306")
+    _DB_NAME = os.environ.get("DB_NAME")
 
-    # Construcción forzada de la URI para evitar que use variables erróneas
+    # Construcción segura
     SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{_DB_USER}:{_DB_PASSWORD}@{_DB_HOST}:{_DB_PORT}/{_DB_NAME}"
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
