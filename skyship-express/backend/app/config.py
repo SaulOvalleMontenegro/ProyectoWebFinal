@@ -2,8 +2,9 @@ import os
 from datetime import timedelta
 from dotenv import load_dotenv
 
-load_dotenv()
-
+# Carga variables locales si existen (útil para desarrollo)
+# override=False asegura que las variables del sistema (AWS) tengan prioridad
+load_dotenv(override=False)
 
 class Config:
     # ── Seguridad ────────────────────────────────────────────
@@ -12,28 +13,26 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=24)
 
     # ── Base de datos (SQLAlchemy ORM + PyMySQL) ─────────────
+    # Usamos valores por defecto seguros para desarrollo local, 
+    # pero en AWS tomará los valores que configuraste con 'eb setenv'
     _DB_USER = os.getenv("DB_USER", "root")
     _DB_PASSWORD = os.getenv("DB_PASSWORD", "")
     _DB_HOST = os.getenv("DB_HOST", "localhost")
     _DB_PORT = os.getenv("DB_PORT", "3306")
     _DB_NAME = os.getenv("DB_NAME", "skyship_db")
 
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "DATABASE_URL",
-        f"mysql+pymysql://{_DB_USER}:{_DB_PASSWORD}@{_DB_HOST}:{_DB_PORT}/{_DB_NAME}",
-    )
+    # Construcción forzada de la URI para evitar que use variables erróneas
+    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{_DB_USER}:{_DB_PASSWORD}@{_DB_HOST}:{_DB_PORT}/{_DB_NAME}"
+    
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_pre_ping": True,   # Reconecta si la conexión cae (importante en AWS RDS)
-        "pool_recycle": 300,     # Recicla conexiones cada 5 min
+        "pool_pre_ping": True,  # Reconecta si la conexión cae (crucial en AWS RDS)
+        "pool_recycle": 300,    # Recicla conexiones cada 5 min
         "pool_size": 10,
         "max_overflow": 20,
     }
 
     # ── Pepper (seguridad adicional de contraseñas) ──────────
-    # Se concatena a la contraseña ANTES de hashear con bcrypt.
-    # Nunca se guarda en la BD. Si se filtra la BD, los hashes
-    # son inútiles sin este valor.
     PASSWORD_PEPPER = os.getenv("PASSWORD_PEPPER", "skyship-default-pepper-CHANGE-IN-PROD")
 
     # ── CORS ─────────────────────────────────────────────────

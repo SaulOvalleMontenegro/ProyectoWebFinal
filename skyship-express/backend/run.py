@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=False)
 
 from app import create_app, db
 
@@ -14,7 +14,7 @@ with app.app_context():
 
 # Esto solo se ejecutará cuando corras el servidor en tu computadora (local)
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 8000))
     debug = os.getenv('FLASK_ENV', 'development') == 'development'
     print(f"🚀 SkyShip Express API corriendo en http://localhost:{port}")
     app.run(host='0.0.0.0', port=port, debug=debug)
