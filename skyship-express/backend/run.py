@@ -12,7 +12,7 @@ if __name__ == '__main__':
         db.create_all()
         print("✅ Base de datos inicializada correctamente.")
 
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 8000))
     debug = os.getenv('FLASK_ENV', 'development') == 'development'
     print(f"🚀 SkyShip Express API corriendo en http://localhost:{port}")
     app.run(host='0.0.0.0', port=port, debug=debug)
