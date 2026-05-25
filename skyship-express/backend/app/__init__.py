@@ -39,6 +39,11 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix="/api/admin")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
 
+    # Ruta raíz (para el health check de EB)
+    @app.route("/")
+    def index():
+        return {"status": "ok"}, 200
+
     # Ruta de salud (health check para AWS)
     @app.route("/api/health")
     def health():
